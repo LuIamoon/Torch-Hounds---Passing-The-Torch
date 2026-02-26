@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Leirsa",
+    "type": "Character",
+    "description": "A grizzled hound. Once an outsider, now the Sentry of the North.",
+    "url": "Pages/Characters/Leirsa.html"
+  },
+  {
+    "title": "North Clan",
+    "type": "Clan",
+    "description": "One of the four ancient clans, residing in the frozen sheets.",
+    "url": "Pages/Clans/North Clan.html"
+  }
+]
