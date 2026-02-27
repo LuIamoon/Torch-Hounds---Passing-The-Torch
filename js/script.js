@@ -60,9 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // =============================
   // BASIC SOUND EFFECTS
   // =============================
-  const openSound = new Audio("/Sounds/parchment-open.mp3");
-  const moveSound = new Audio("/Sounds/parchment-move.mp3");
-  const typeSound = new Audio("/Sounds/quill-scratch.mp3");
+  const openSound = new Audio("./Sounds/parchment-open.mp3");
+  const moveSound = new Audio("./Sounds/parchment-move.mp3");
+  const typeSound = new Audio("./Sounds/quill-scratch.mp3");
 
   openSound.volume = 1;
   moveSound.volume = 0.5;
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =============================
   // AMBIENT AUDIO (Web Audio API)
   // =============================
-  const ambientAudio = new Audio("/Sounds/ambient-room.mp3");
+  const ambientAudio = new Audio("./Sounds/ambient-room.mp3");
   ambientAudio.loop = true;
   ambientAudio.volume = 0; // start silent
 
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load search data
   let searchData = [];
-  fetch("/data.json")
+  fetch("./data.json")
     .then(res => res.json())
     .then(data => { searchData = data; });
 
