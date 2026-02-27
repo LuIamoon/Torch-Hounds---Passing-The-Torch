@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.getElementById("soundToggle");
   const contentContainer = document.getElementById("content");
   const dustContainer = document.getElementById("dust-container");
+  const downloadBtn = document.getElementById("downloadRef");
 
   // =============================
   // SPA PAGE LOADING
@@ -152,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
       results.innerHTML = `<div class="result-item result-empty">The crystals grow silent...</div>`;
       results.classList.add("active");
       setTimeout(() => {
+        if (results.classList.contains("active")) moveSound.play();
         if (!input.value) results.classList.remove("active");
       }, 2500);
       return;
@@ -218,9 +220,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("click", (e) => {
     const clickedInsideSearch = input.contains(e.target) || results.contains(e.target);
+    const hasResults = results.innerHTML.trim().length > 0;
+    const hasQuery = input.value.trim().length > 0;
     if (!clickedInsideSearch) {
       results.classList.remove("active");
       currentIndex = -1;
+      if (hasResults && hasQuery) {
+        moveSound.play();
+      }
     }
   });
 
@@ -260,6 +267,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("popstate", e => {
     if (e.state && e.state.page) loadPage(e.state.page);
+  });
+
+  // =============================
+  // FALLBACK FORCE DOWNLOAD
+  // =============================
+  const downloadLink = document.getElementById("downloadLink");
+  downloadLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    const link = document.createElement("a");
+    link.href = downloadLink.href;
+    link.download = "TorchHoundRef.png"; // set filename
+    document.body.appendChild(link);     // some browsers require it in DOM
+    link.click();
+    link.remove();
   });
 
   // =============================
