@@ -7,9 +7,13 @@
 }
 
 body {
-    margin: 2rem auto;
-    padding: 1rem;
+    margin: 2.5vh auto;
+    padding: 1vh;
+    min-height: 92vh;
     box-shadow: 0 0 2rem rgba(255, 248, 220, 0.85);
+    border-style: groove;
+    border-color: rgb(104, 72, 57);
+    border-width: 0.5vh 0;
     background-image: url("../Images/grunge-paper-background.jpg");
     background-color: rgb(134, 109, 79);
     background-repeat: no-repeat;
@@ -19,21 +23,28 @@ body {
     font-family: "Garamond", serif;
 }
 
+#nav-flex {
+    display: flex;
+    align-items: center;
+}
+
 .navbar {
     border-style: hidden hidden double hidden;
-    border-color: rgb(25, 25, 25);
+    border-color: #2b1a0f;
     padding: 0.5rem;
 }
 
 #navbar-bar {
-    background-color: black;
-    padding: 0.2rem;
-    margin-right: 0.5rem;
+    background-color: #2b1a0f;
+    padding: 1% 0.2rem;
+    margin-right: 0.25rem;
+    align-self: stretch;
 }
 
 .search-wrapper {
     position: relative;
-    width: 300px;
+    min-width: 200px;
+    width: auto;
 }
 #searchInput {
     width: 100%;
@@ -42,6 +53,7 @@ body {
     border: 2px solid #5a3e2b;
     border-radius: 5px;
     background-color: #d1c3a6;
+    outline: none;
 }
 .search-results {
     position: absolute;
@@ -142,13 +154,25 @@ body {
     }
 }
 
-nav a {
+#navLink {
     text-decoration: none;
     color: brown;
     transition: color 0.5s;
+    text-transform: uppercase;
+    text-shadow: 1px 1px rgb(27, 27, 27);
+    border-right: 2px solid #2b1a0f;
+    padding-right: 5px;
 }
-nav a.active {
+#navLink.active {
     color: aquamarine;
+}
+
+#navLink:hover {
+    color: rgb(228, 112, 70);
+}
+
+#navLink:active {
+    color: burlywood;
 }
 
 a:hover {
@@ -160,17 +184,21 @@ a:active {
 }
 
 .sound-toggle {
-    background: rgba(90, 84, 71, 0.5);
+    background: rgba(151, 93, 54, 0.5);
     border: 2px dashed #5a3e2b;
-    border-radius: 100%;
-    padding: 0.2rem 0.2rem;
+    border-radius: 50%;
     font-size: 1rem;
+    align-items: center;
+    justify-content: center;
+    padding: unset;
+    width: 2rem;
+    height: 2rem;
     cursor: pointer;
-    float: right;
+    margin-left: auto;
 }
 
 .sound-toggle:hover {
-    background: rgba(126, 116, 99, 0.5);
+    background: rgba(117, 84, 55, 0.5);
 }
 
 
