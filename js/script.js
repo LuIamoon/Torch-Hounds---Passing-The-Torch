@@ -73,49 +73,34 @@ document.addEventListener("DOMContentLoaded", () => {
   // =============================
   // AMBIENT AUDIO (Web Audio API)
   // =============================
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  const ambientGain = audioContext.createGain();
-  ambientGain.gain.value = 0;
-  ambientGain.connect(audioContext.destination);
+  const ambientAudio = new Audio("/Sounds/ambient-room.mp3");
+  ambientAudio.loop = true;
+  ambientAudio.volume = 0; // start silent
 
-  let ambientBuffer = null;
-  let ambientSource = null;
+  function startAmbient(targetVolume = 0.15, fadeTime = 2000) {
+  ambientAudio.play();
 
-  fetch("/Sounds/ambient-room.mp3")
-    .then(res => res.arrayBuffer())
-    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
-    .then(decoded => { ambientBuffer = decoded; });
-
-  function startAmbient(finalVolume = 0.15, fadeTime = 2) {
-    if (!ambientBuffer) return;
-
-    ambientSource = audioContext.createBufferSource();
-    ambientSource.buffer = ambientBuffer;
-    ambientSource.loop = true;
-    ambientSource.connect(ambientGain);
-    ambientSource.start(0);
-
-    const now = audioContext.currentTime;
-    ambientGain.gain.cancelScheduledValues(now);
-    ambientGain.gain.setValueAtTime(0, now);
-    ambientGain.gain.linearRampToValueAtTime(finalVolume, now + fadeTime);
+  const step = targetVolume / (fadeTime / 50);
+  const fade = setInterval(() => {
+    if (ambientAudio.volume < targetVolume) {
+      ambientAudio.volume = Math.min(targetVolume, ambientAudio.volume + step);
+    } else {
+      clearInterval(fade);
+    }
+  }, 50);
   }
 
-  function stopAmbient(fadeTime = 2) {
-    if (!ambientSource) return;
+  function stopAmbient(fadeTime = 2000) {
+  const step = ambientAudio.volume / (fadeTime / 50);
 
-    const now = audioContext.currentTime;
-    ambientGain.gain.cancelScheduledValues(now);
-    ambientGain.gain.setValueAtTime(ambientGain.gain.value, now);
-    ambientGain.gain.linearRampToValueAtTime(0, now + fadeTime);
-
-    setTimeout(() => {
-      if (ambientSource) {
-        ambientSource.stop();
-        ambientSource.disconnect();
-        ambientSource = null;
-      }
-    }, fadeTime * 1000);
+  const fade = setInterval(() => {
+    if (ambientAudio.volume > 0) {
+      ambientAudio.volume = Math.max(0, ambientAudio.volume - step);
+    } else {
+      ambientAudio.pause();
+      clearInterval(fade);
+    }
+  }, 50);
   }
 
   // Toggle button
@@ -134,8 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Unlock audio on first interaction
   document.addEventListener("click", () => {
-    audioContext.resume();
-    if (soundEnabled && !ambientSource) startAmbient();
+    if (soundEnabled) startAmbient();
   }, { once: true });
 
   // =============================
