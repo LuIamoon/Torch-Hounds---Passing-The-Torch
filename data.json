@@ -3,12 +3,24 @@
     "title": "Leirsa",
     "type": "Character",
     "description": "A grizzled hound. Once an outsider, now the Sentry of the North.",
-    "url": "Pages/Characters/Leirsa.html"
+    "url": "./Pages/Characters/Leirsa.html"
   },
   {
     "title": "North Clan",
     "type": "Clan",
     "description": "One of the four ancient clans, residing in the frozen sheets.",
-    "url": "Pages/Clans/North Clan.html"
+    "url": "./Pages/Clans/North Clan.html"
+  },
+  {
+    "title": "Timeline",
+    "type": "Lore",
+    "description": "Timeline of events throughout Hound history.",
+    "url":"./Pages/Timeline.html"
+  },
+  {
+    "title": "Flourite Crystals",
+    "type": "Lore",
+    "description": "A sacred relic and tool of all Houndkind for ceremonial use and viewing / storing memories.",
+    "url":"./Pages/Flourite.html"
   }
 ]
