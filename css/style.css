@@ -82,6 +82,36 @@ h1 {
     0 0 12px rgba(255, 90, 0, 0.2);
 }
 
+#contentEntries {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto auto;
+}
+
+#contentEntries a {
+    padding: 1rem 2rem;
+    background: #69472d;
+    border-radius: 0.5rem;
+    border: 2px dashed #2b1a0f;
+    color: #bfa76a;
+    transition: color 0.5s;
+    font-size: auto;
+    text-shadow: 1px 1px rgb(27, 27, 27);
+    box-shadow: -0.5rem -0.5rem 1rem rgba(25, 25, 25, 0.5) inset;
+}
+
+#contentEntries a:hover {
+    color: #e6d6a8;
+    text-shadow: 0 0 4px rgba(230, 214, 168, 0.35);
+}
+#contentEntries a:active {
+    color: rgb(231, 142, 101);
+    animation: crystalPulse 4s infinite ease-in-out;
+}
+
 .gallery {
     display: flex;
     flex-direction: row;
