@@ -298,7 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     const link = document.createElement("a");
     link.href = downloadLink.href;
-    link.download = "TorchHoundRef.png"; // set filename
+    link.download = ""; // set filename
     document.body.appendChild(link);     // some browsers require it in DOM
     link.click();
     link.remove();
