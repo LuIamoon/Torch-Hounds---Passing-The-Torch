@@ -78,6 +78,27 @@ h1 {
     0 0 12px rgba(255, 90, 0, 0.2);
 }
 
+.gallery {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.gallery p {
+    text-shadow:
+    0 0 6px rgba(0, 0, 0, 1),
+    0 0 12px rgba(0, 0, 0, 1);
+}
+
+.galleryPic {
+    flex-grow: 1;
+    max-width: 40vw;
+    min-width: 100px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
 .search-wrapper {
     margin-top: 0.25rem;
     position: relative;
