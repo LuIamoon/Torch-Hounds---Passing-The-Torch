@@ -1,394 +1,337 @@
-.justify-center {
-    justify-content: center;
-}
+document.addEventListener("DOMContentLoaded", () => {
+  // =============================
+  // ELEMENTS
+  // =============================
+  const input = document.getElementById("searchInput");
+  const results = document.getElementById("searchResults");
+  const toggleBtn = document.getElementById("soundToggle");
+  const contentContainer = document.getElementById("content");
+  const dustContainer = document.getElementById("dust-container");
+  const downloadBtn = document.getElementById("downloadRef");
 
-.align-center {
-    text-align: center;
-}
+  // =============================
+  // REVEAL EFFECT
+  // =============================
+  function animateBlocks() {
+  const blocks = document.querySelectorAll(".home-block");
 
-body {
-    margin: 2.5vh auto;
-    padding: 1vh;
-    min-height: 92vh;
-    box-shadow: 0 0 2rem rgba(255, 248, 220, 0.85);
-    border-style: groove;
-    border-color: rgb(104, 72, 57);
-    border-width: 0.5vh 0;
-    background-image: url("../Images/grunge-paper-background.jpg");
-    background-color: rgb(134, 109, 79);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    color: #1b1109;
-    font-family: "Garamond", serif;
-}
+  blocks.forEach(block => {
+    block.classList.remove("visible"); // reset
+  });
 
-#nav-flex {
-    display: flex;
-    align-items: center;
-}
+  blocks.forEach((block, i) => {
+    setTimeout(() => {
+      block.classList.add("visible");
+    }, i * 500);
+  });
+  }
+  
+  animateBlocks();
+  // =============================
+  // SPA PAGE LOADING
+  // =============================
 
-.navbar {
-    border-style: hidden hidden double hidden;
-    border-color: #2b1a0f;
-    padding: 0.5rem;
-    font-size: 80%;
-    @media only screen and (min-width: 450px) {
-        font-size: 120%;
+  async function loadPage(url) {
+    try {
+      const res = await fetch(url);
+      const html = await res.text();
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+
+      const newContent = temp.querySelector("#content");
+      if (!newContent) return;
+
+      content.innerHTML = newContent.innerHTML;
+      content.dataset.page = newContent.dataset.page || "";
+
+      // Update nav highlighting
+      updateActiveNav(url);
+
+      // Call page-specific initialization (if you have a function on the page)
+      if (typeof initPage === "function") initPage();
+
+      setTimeout(() => {
+        animateBlocks();
+      }, 50);
+
+    } catch (err) {
+      console.error("Failed to load page:", err);
     }
-}
+  }
 
-#navbar-bar {
-    background-color: #2b1a0f;
-    padding: 1% 0.2rem;
-    margin-right: 0.25rem;
-    align-self: stretch;
-}
+  function updateActiveNav(url) {
+    const links = document.querySelectorAll("nav a");
+    links.forEach(link => {
+      if (link.getAttribute("href") === url) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  }
 
-#navLink {
-    background-color: #491309;
-    padding-top: 1.5rem;
-    padding-left: 0.25rem;
-    box-shadow: -0.5rem -0.5rem 1rem rgba(25, 25, 25, 0.5) inset;
-    text-decoration: none;
-    color: #bfa76a;
-    transition: color 0.5s;
-    text-transform: uppercase;
-    text-shadow: 1px 1px rgb(27, 27, 27);
-    border-right: 2px solid #2b1a0f;
-    border-left: 2px solid #2b1a0f;
-    border-bottom: 2px solid #2b1a0f;
-    padding-right: 5px;
-    border-bottom-left-radius: 0.5rem;
-    border-bottom-right-radius: 1rem;
-    transition: all 0.3s ease;
-}
+  // Intercept nav link clicks
+  document.querySelectorAll("nav a").forEach(link => {
+    link.addEventListener("click", e => {
+      e.preventDefault();
+      const url = link.getAttribute("href");
+      loadPage(url);
+    });
+  });
 
-#navLink:hover {
-    color: #e6d6a8;
-    text-shadow: 0 0 4px rgba(230, 214, 168, 0.35);
-}
+  // =============================
+  // BASIC SOUND EFFECTS
+  // =============================
+  const openSound = new Audio("./Sounds/parchment-open.mp3");
+  const moveSound = new Audio("./Sounds/parchment-move.mp3");
+  const typeSound = new Audio("./Sounds/quill-scratch.mp3");
 
-h1 {
-    margin-left: -0.5rem;
-    margin-right: -0.5rem;
-    box-shadow:
-        0 8px 15px rgba(0, 0, 0, 0.2),  /* main drop shadow */
-        0 0 6px rgba(255, 240, 200, 0.15); /* soft glow */
-    transform: rotateZ(0.5deg); /* optional tiny tilt for curl illusion */
-    color: #ffb36b;
-    text-shadow:
-    0 0 6px rgba(255, 140, 0, 0.4),
-    0 0 12px rgba(255, 90, 0, 0.2);
-}
+  openSound.volume = 1;
+  moveSound.volume = 0.5;
+  typeSound.volume = 0.1;
 
-#contentEntries {
-    display: grid;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    grid-template-columns: auto auto auto;
-    grid-template-rows: auto auto auto;
-}
+  let soundEnabled = localStorage.getItem("soundEnabled") === "true" || true;
 
-#contentEntries a {
-    padding: 1rem 2rem;
-    background: #69472d;
-    border-radius: 0.5rem;
-    border: 2px dashed #2b1a0f;
-    color: #bfa76a;
-    transition: color 0.5s;
-    font-size: auto;
-    text-shadow: 1px 1px rgb(27, 27, 27);
-    box-shadow: -0.5rem -0.5rem 1rem rgba(25, 25, 25, 0.5) inset;
-}
+  // =============================
+  // AMBIENT AUDIO (Web Audio API)
+  // =============================
+  const ambientAudio = new Audio("./Sounds/ambient-room.mp3");
+  ambientAudio.loop = true;
+  ambientAudio.volume = 0; // start silent
 
-#contentEntries a:hover {
-    color: #e6d6a8;
-    text-shadow: 0 0 4px rgba(230, 214, 168, 0.35);
-}
-#contentEntries a:active {
-    color: rgb(231, 142, 101);
-    animation: crystalPulse 4s infinite ease-in-out;
-}
+  function startAmbient(targetVolume = 0.15, fadeTime = 2000) {
+  ambientAudio.play();
 
-.gallery {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
+  const step = targetVolume / (fadeTime / 50);
+  const fade = setInterval(() => {
+    if (ambientAudio.volume < targetVolume) {
+      ambientAudio.volume = Math.min(targetVolume, ambientAudio.volume + step);
+    } else {
+      clearInterval(fade);
+    }
+  }, 50);
+  }
 
-.gallery p {
-    text-shadow:
-    0 0 6px rgba(0, 0, 0, 1),
-    0 0 12px rgba(0, 0, 0, 1);
-}
+  function stopAmbient(fadeTime = 2000) {
+  const step = ambientAudio.volume / (fadeTime / 50);
 
-.galleryPic {
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
-}
+  const fade = setInterval(() => {
+    if (ambientAudio.volume > 0) {
+      ambientAudio.volume = Math.max(0, ambientAudio.volume - step);
+    } else {
+      ambientAudio.pause();
+      clearInterval(fade);
+    }
+  }, 50);
+  }
 
-.galleryContainer {
-    flex-direction: column;
-    display: flex;
-    aspect-ratio: 3 / 4;
-    width: clamp(150px, 35vw, 500px);
-}
+  // Toggle button
+  toggleBtn.textContent = soundEnabled ? "🔊" : "🔇";
+  toggleBtn.addEventListener("click", () => {
+    soundEnabled = !soundEnabled;
+    localStorage.setItem("soundEnabled", soundEnabled);
+    if (soundEnabled) {
+      toggleBtn.textContent = "🔊";
+      startAmbient();
+    } else {
+      toggleBtn.textContent = "🔇";
+      stopAmbient();
+    }
+  });
 
-.search-wrapper {
-    margin-top: 0.25rem;
-    position: relative;
-    min-width: 200px;
-    width: auto;
-}
+  // Unlock audio on first interaction
+  document.addEventListener("click", () => {
+    if (soundEnabled) startAmbient();
+  }, { once: true });
 
-#searchInput {
-    width: 100%;
-    padding: 0.25rem;
-    font-family: "Garamond", serif;
-    border: 2px solid #5a3e2b;
-    border-radius: 5px;
-    background-color: #d1c3a6;
-    outline: none;
-}
+  // =============================
+  // SEARCH SYSTEM
+  // =============================
+  let currentIndex = -1;
+  let currentResults = [];
 
-.search-results {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    max-height: 250px;
-    overflow-y: auto;
+  // Load search data
+  let searchData = [];
+  fetch("./data.json")
+    .then(res => res.json())
+    .then(data => { searchData = data; });
 
-    background: #c2b49a;
-    border: 1px solid #5a3e2b;
-    border-radius: 2.5px;
-    border-top: none;
+  function handleSearchInput() {
+    if (!searchData.length) return;
 
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-
-    z-index: 2;
-
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-5px);
-
-    transition:
-        opacity 0.25s ease,
-        transform 0.25s ease,
-        visibility 0.25s;
-}
-
-.search-results.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.result-link {
-    display: block;
-    padding: 5px;
-    text-decoration: none;
-    color: inherit;
-}
-
-.result-link:hover {
-    background-color: rgba(90, 62, 43, 0.2);
-}
-
-.result-link:hover .result-title {
-    color: #8b2f1a;
-    /* subtle warm ink highlight */
-}
-
-.result-link.selected {
-    background-color: rgba(90, 62, 43, 0.2);
-}
-
-.result-link.selected .result-title {
-    color: #8b2f1a;
-}
-
-.result-title {
-    color: brown;
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-.result-type {
-    color: #3f2d1f;
-}
-
-.result-item {
-    border-bottom: 1px solid rgba(90, 62, 43, 0.3);
-}
-
-.result-empty {
-    font-style: italic;
-    opacity: 0.7;
-    padding: 5px;
-}
-
-.result-none {
-    color: #6b1f1f;
-    font-style: italic;
-    padding: 5px;
-}
-
-.result-empty,
-.result-none {
-    opacity: 0;
-    animation: inkAppear 0.8s ease forwards;
-}
-
-@keyframes inkAppear {
-    0% {
-        opacity: 0;
-        filter: blur(2px);
-        letter-spacing: 2px;
+    if (soundEnabled) {
+      const scratch = typeSound.cloneNode();
+      scratch.playbackRate = 0.85 + Math.random() * 0.3;
+      scratch.volume = 0.07 + Math.random() * 0.05;
+      scratch.play();
     }
 
-    50% {
-        opacity: 0.6;
-        filter: blur(1px);
+    const query = input.value.toLowerCase();
+    results.innerHTML = "";
+    currentIndex = -1;
+
+    if (!query) {
+      results.innerHTML = `<div class="result-item result-empty">The crystals grow silent...</div>`;
+      results.classList.add("active");
+      setTimeout(() => {
+        if (results.classList.contains("active")) moveSound.play();
+        if (!input.value) results.classList.remove("active");
+      }, 2500);
+      return;
     }
 
-    100% {
-        opacity: 1;
-        filter: blur(0);
-        letter-spacing: normal;
-    }
-}
+    const filtered = searchData.filter(item =>
+      item.title.toLowerCase().includes(query) ||
+      item.description.toLowerCase().includes(query)
+    );
 
-@keyframes crystalPulse {
-  0% { text-shadow: 0 0 3px rgba(200, 220, 255, 0.2); }
-  50% { text-shadow: 0 0 6px rgba(200, 220, 255, 0.4); }
-  100% { text-shadow: 0 0 3px rgba(200, 220, 255, 0.2); }
-}
-
-#downloadLink {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: #8B5E3C;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    cursor: pointer;
-    animation: crystalPulse 4s infinite ease-in-out;
-}
-
-#downloadLink:hover {
-    background-color: #a07450;
-}
-
-#downloadLink:active {
-    background-color: #5c3e28;
-}
-
-#navLink.active {
-    color: rgb(127, 246, 255);
-    text-shadow: 0 0 4px rgba(230, 214, 168, 0.35);
-}
-
-#navLink:active {
-    color: rgb(231, 142, 101);
-}
-
-a:hover {
-    color: #e6d6a8;
-    text-shadow: 0 0 4px rgba(230, 214, 168, 0.35);
-}
-
-a:active {
-    color: rgb(57, 208, 235);
-    animation: crystalPulse 4s infinite ease-in-out;
-}
-
-.sound-toggle {
-    background: rgba(151, 93, 54, 0.5);
-    border: 2px dashed #5a3e2b;
-    border-radius: 50%;
-    font-size: 1rem;
-    align-items: center;
-    justify-content: center;
-    padding: unset;
-    width: 2rem;
-    height: 2rem;
-    cursor: pointer;
-    margin-left: auto;
-}
-
-.sound-toggle:hover {
-    background: rgba(117, 84, 55, 0.5);
-}
-
-.sound-toggle:active {
-    background-color: rgba(192, 118, 69, 0.5);
-}
-
-hr {
-    border-color: #2b1a0f;
-    color: #2b1a0f;
-    background-color: #2b1a0f;
-}
-
-.home-block {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 1s ease-out, transform 1s ease-out;
-}
-
-.home-block.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-#dust-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 5;
-    /* Make sure it's above background */
-}
-
-.dust {
-    position: absolute;
-    background: rgba(100, 202, 205, 0.801);
-    border-radius: 50%;
-    opacity: 0;
-    animation: floatDust linear forwards;
-}
-
-@keyframes floatDust {
-    0% {
-        transform: translateY(0px) translateX(0px);
-        opacity: 0;
+    if (!filtered.length) {
+      results.innerHTML = `<div class="result-item result-none">No crystal resonates with that...</div>`;
+    } else {
+      filtered.forEach(item => {
+        const div = document.createElement("div");
+        div.classList.add("result-item");
+        div.innerHTML = `<a href="${item.url}" class="result-link">
+          <span class="result-title">${item.title}</span>
+          <span class="result-type"> — ${item.type}</span>
+        </a>`;
+        results.appendChild(div);
+      });
     }
 
-    15% {
-        opacity: 0.5;
+    if (!results.classList.contains("active") && filtered.length > 0 && soundEnabled) {
+      openSound.currentTime = 0;
+      openSound.play();
     }
+    results.classList.add("active");
 
-    80% {
-        opacity: 0.4;
-    }
+    currentResults = Array.from(results.querySelectorAll(".result-link"));
+    currentResults.forEach((link, index) => {
+      link.addEventListener("mouseenter", () => {
+        currentIndex = index;
+        updateSelection();
+      });
+    });
+  }
 
-    100% {
-        transform: translateY(-100vh) translateX(var(--drift));
-        opacity: 0;
+  input.addEventListener("input", handleSearchInput);
+  input.value = localStorage.getItem("lastSearch") || "";
+  if (input.value) handleSearchInput();
+
+  input.addEventListener("keydown", (e) => {
+    if (!currentResults.length) return;
+    if (e.key === "ArrowDown") { e.preventDefault(); currentIndex = (currentIndex + 1) % currentResults.length; updateSelection(); playMoveSound(); }
+    if (e.key === "ArrowUp") { e.preventDefault(); currentIndex = (currentIndex - 1 + currentResults.length) % currentResults.length; updateSelection(); playMoveSound(); }
+    if (e.key === "Enter" && currentIndex >= 0) currentResults[currentIndex].click();
+  });
+
+  function updateSelection() {
+    currentResults.forEach(link => link.classList.remove("selected"));
+    if (currentIndex >= 0) {
+      currentResults[currentIndex].classList.add("selected");
+      currentResults[currentIndex].scrollIntoView({ block: "nearest" });
     }
+  }
+
+  function playMoveSound() {
+    if (!soundEnabled) return;
+    if (moveSound.paused) moveSound.play();
+    else moveSound.currentTime = 0;
+  }
+
+  document.addEventListener("click", (e) => {
+    const clickedInsideSearch = input.contains(e.target) || results.contains(e.target);
+    const hasResults = results.innerHTML.trim().length > 0;
+    const hasQuery = input.value.trim().length > 0;
+    if (!clickedInsideSearch) {
+      results.classList.remove("active");
+      currentIndex = -1;
+      if (hasResults && hasQuery) {
+        moveSound.play();
+      }
+    }
+  });
+
+  input.addEventListener("focus", () => {
+    const hasQuery = input.value.trim().length > 0;
+    const hasResults = results.innerHTML.trim().length > 0;
+    if (hasQuery && hasResults) {
+      results.classList.add("active");
+      openSound.currentTime = 0;
+      openSound.play();
+    }
+  });
+
+  window.addEventListener("beforeunload", () => {
+    localStorage.setItem("lastSearch", input.value);
+  });
+
+  document.addEventListener("click", e => {
+    const link = e.target.closest("a");
+    if (!link) return;
+    const href = link.getAttribute("href");
+    if (!href || href.startsWith("#") || href.startsWith("http")) return;
+    e.preventDefault();
+    results.classList.remove("active");
+    currentIndex = -1
+    moveSound.currentTime = 0
+    moveSound.play();
+    loadPage(href);
+
+    function updateActiveNav(url) {
+    const links = document.querySelectorAll("nav a");
+    links.forEach(link => {
+    if (link.getAttribute("href") === url) {
+      link.classList.add("active"); // highlight this link
+    } else {
+      link.classList.remove("active");
+    }
+  });
 }
+  });
 
-html {
-    box-shadow: 0 0 2rem black inset;
-}
+  window.addEventListener("popstate", e => {
+    if (e.state && e.state.page) loadPage(e.state.page);
+  });
+
+  // =============================
+  // FALLBACK FORCE DOWNLOAD
+  // =============================
+  const downloadLink = document.getElementById("downloadLink");
+  downloadLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    const link = document.createElement("a");
+    link.href = downloadLink.href;
+    link.download = "TorchHoundRef.png"; // set filename
+    document.body.appendChild(link);     // some browsers require it in DOM
+    link.click();
+    link.remove();
+  });
+
+  // =============================
+  // DUST EFFECT
+  // =============================
+  function createDust() {
+    const dust = document.createElement("div");
+    dust.classList.add("dust");
+
+    const size = Math.random() * 3 + 1;
+    dust.style.width = size + "px";
+    dust.style.height = size + "px";
+
+    const drift = (Math.random() - 0.5) * 80;
+    dust.style.setProperty("--drift", drift + "px");
+
+    dust.style.left = Math.random() * window.innerWidth + "px";
+    dust.style.top = window.innerHeight + "px";
+
+    const duration = 20 + Math.random() * 15;
+    dust.style.animationDuration = duration + "s";
+
+    dustContainer.appendChild(dust);
+
+    setTimeout(() => dust.remove(), duration * 1000);
+  }
+
+  setInterval(createDust, 500);
+});
