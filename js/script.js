@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   // =============================
   // ELEMENTS
   // =============================
@@ -10,6 +9,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const dustContainer = document.getElementById("dust-container");
   const downloadBtn = document.getElementById("downloadRef");
 
+  // =============================
+  // REVEAL EFFECT
+  // =============================
+  function animateBlocks() {
+  const blocks = document.querySelectorAll(".home-block");
+
+  blocks.forEach(block => {
+    block.classList.remove("visible"); // reset
+  });
+
+  blocks.forEach((block, i) => {
+    setTimeout(() => {
+      block.classList.add("visible");
+    }, i * 500);
+  });
+  }
+  
+  animateBlocks();
   // =============================
   // SPA PAGE LOADING
   // =============================
@@ -32,6 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Call page-specific initialization (if you have a function on the page)
       if (typeof initPage === "function") initPage();
+
+      setTimeout(() => {
+        animateBlocks();
+      }, 50);
 
     } catch (err) {
       console.error("Failed to load page:", err);
