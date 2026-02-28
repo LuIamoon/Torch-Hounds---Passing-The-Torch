@@ -14,7 +14,7 @@ body {
     border-style: groove;
     border-color: rgb(104, 72, 57);
     border-width: 0.5vh 0;
-    background-image: url("/Images/grunge-paper-background.jpg");
+    background-image: url("../Images/grunge-paper-background.jpg");
     background-color: rgb(134, 109, 79);
     background-repeat: no-repeat;
     background-attachment: fixed;
