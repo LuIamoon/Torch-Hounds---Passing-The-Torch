@@ -32,6 +32,10 @@ body {
     border-style: hidden hidden double hidden;
     border-color: #2b1a0f;
     padding: 0.5rem;
+    font-size: 80%;
+    @media only screen and (min-width: 450px) {
+        font-size: 120%;
+    }
 }
 
 #navbar-bar {
@@ -83,6 +87,8 @@ h1 {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .gallery p {
@@ -92,11 +98,16 @@ h1 {
 }
 
 .galleryPic {
-    flex-grow: 1;
-    max-width: 40vw;
-    min-width: 100px;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.galleryContainer {
+    flex-direction: column;
+    display: flex;
+    aspect-ratio: 3 / 4;
+    width: clamp(150px, 35vw, 500px);
 }
 
 .search-wrapper {
