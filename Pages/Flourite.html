@@ -9,21 +9,22 @@
 </head>
 <body>
     <header>
-        <nav class="navbar">
-            <div id="nav-flex">
-                <div id="navbar-bar"></div>
-                <div>
-                    <a href="index.html" id="navLink" data-page="home">Home</a>
-                    <a href="lore.html" id="navLink" class="active" data-page="lore">Lore</a>
-                    <a href="characters.html" id="navLink" data-page="characters">Characters</a>
-                    <div class="search-wrapper">
-                        <input type="text" id="searchInput" placeholder="Seek a Flourite crystal...">
-                        <div id="searchResults" class="search-results"></div>
+            <nav class="navbar">
+                <div id="nav-flex">
+                    <div id="navbar-bar"></div>
+                    <div>
+                        <a href="index.html" class="navLink active" data-page="home"><span>Home</span></a>
+                        <a href="about.html" class="navLink" data-page="about"><span>About</span></a>
+                        <a href="lore.html" class="navLink" data-page="lore"><span>Lore</span></a>
+                        <a href="characters.html" class="navLink" data-page="characters"><span>Characters</span></a>
+                        <div class="search-wrapper">
+                            <input type="text" id="searchInput" placeholder="Seek a Flourite crystal...">
+                            <div id="searchResults" class="search-results"></div>
+                        </div>
                     </div>
+                    <button id="soundToggle" class="sound-toggle" aria-label="Toggle sound">🔊</button>
                 </div>
-                <button id="soundToggle" class="sound-toggle" aria-label="Toggle sound">🔊</button>
-            </div>
-        </nav>
+            </nav>
     </header>
 
     <main id="content">
