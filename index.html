@@ -10,88 +10,98 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar">
-            <div id="nav-flex">
-                <div id="navbar-bar"></div>
-                <div>
-                    <a href="index.html" id="navLink" class="active" data-page="home">Home</a>
-                    <a href="about.html" id="navLink" data-page="about">About</a>
-                    <a href="lore.html" id="navLink" data-page="lore">Lore</a>
-                    <a href="characters.html" id="navLink" data-page="characters">Characters</a>
-                    <div class="search-wrapper">
-                        <input type="text" id="searchInput" placeholder="Seek a Flourite crystal...">
-                        <div id="searchResults" class="search-results"></div>
+    <div class="page-frame">
+        <header>
+            <nav class="navbar">
+                <div id="nav-flex">
+                    <div id="navbar-bar"></div>
+                    <div>
+                        <a href="index.html" class="navLink active" data-page="home"><span>Home</span></a>
+                        <a href="about.html" class="navLink" data-page="about"><span>About</span></a>
+                        <a href="lore.html" class="navLink" data-page="lore"><span>Lore</span></a>
+                        <a href="characters.html" class="navLink" data-page="characters"><span>Characters</a>
+                        <div class="search-wrapper">
+                            <input type="text" id="searchInput" placeholder="Seek a Flourite crystal...">
+                            <div id="searchResults" class="search-results"></div>
+                        </div>
+                    </div>
+                    <button id="soundToggle" class="sound-toggle" aria-label="Toggle sound">🔊</button>
+                </div>
+            </nav>
+        </header>
+
+        <main id="content">
+            <div class="home-block">
+                <h1 class="justify-center align-center">You stand before the Torchbound Record.<br>I am its keeper</h1>
+            </div>
+            <div class="home-block">
+                <div class="home-block">
+                    <h3 class="justify-center align-center">
+                        First things first: <span style="color: rgb(175, 25, 5);">Torch
+                            Hounds</span> are an open species originally created by <a
+                            href="https://www.deviantart.com/pon-ee" target="_blank">StickFigureQueen</a> on <span
+                            style="color: rgb(0, 229, 155);">DeviantArt</span>
+                        prior to the account's complete erasure of any & all reference material.
+                    </h3>
+                </div>
+                <div class="home-block">
+                    <h3 class="justify-center align-center">
+                        Despite thorough
+                        searching, the original species reference sheet cannot be found anywhere online — at least not
+                        in its
+                        original quality… until now.
+                    </h3>
+                </div>
+                <div class="home-block">
+                    <h3 class="justify-center align-center">
+                        Though I could never have predicted the future, by sheer luck I
+                        preserved an original download of the reference in its full pixel detail. And so, here we are —
+                        picking
+                        up the mantle to continue the legacy.
+                    </h3>
+                </div>
+                <div class="home-block">
+                    <h3 class="justify-center align-center">
+                        I welcome each & every one of you to participate in this
+                        wonderful world!
+                    </h3>
+                </div>
+                <div class="home-block">
+                    <h3 class="justify-center align-center">
+                        <quote>— 'The Last Ember Scribe'</quote>
+                    </h3>
+                </div>
+            </div>
+            <div class="home-block">
+                <hr>
+                <div id="fetchRef" class="justify-center align-center">
+                    <p style="margin-bottom: 0.25rem;">Download reference sheet</p>
+                    <a href="./Images/TorchHoundRef.png" id="downloadLink" download="TorchHoundRef.png">Unseal
+                        Knowledge</a>
+                </div>
+                <hr>
+            </div>
+            <div class="home-block">
+                <div class="gallery">
+                    <div class="justify-center align-center galleryContainer north">
+                        <p style="color: rgb(152, 99, 178);">Brenda</p>
+                        <div class="art-frame">
+                            <img class="galleryPic" style="order: 1;" src="./Images/Brenda.png">
+                        </div>
+                    </div>
+                    <div class="justify-center align-center galleryContainer banished">
+                        <p style="color: rgb(199, 87, 187);">Eleanor</p>
+                        <div class="art-frame">
+                            <img class="galleryPic" style="order: 2;" src="./Images/Eleanor.png">
+                        </div>
                     </div>
                 </div>
-                <button id="soundToggle" class="sound-toggle" aria-label="Toggle sound">🔊</button>
             </div>
-        </nav>
-    </header>
+        </main>
 
-    <main id="content">
-        <div class="home-block">
-            <h1 class="justify-center align-center">You stand before the Torchbound Record.<br>I am its keeper</h1>
-        </div>
-        <div class="home-block">
-            <div class="home-block">
-                <h3 class="justify-center align-center">
-                    First things first: <span style="color: rgb(175, 25, 5);">Torch
-                    Hounds</span> are an open species originally created by <a href="https://www.deviantart.com/pon-ee"
-                    target="_blank">StickFigureQueen</a> on <span style="color: rgb(0, 229, 155);">DeviantArt</span>
-                    prior to the account's complete erasure of any & all reference material.
-                </h3>
-            </div>
-            <div class="home-block">
-                <h3 class="justify-center align-center">
-                    Despite thorough
-                    searching, the original species reference sheet cannot be found anywhere online — at least not in its
-                    original quality… until now.
-                </h3>
-            </div>
-            <div class="home-block">
-                <h3 class="justify-center align-center">
-                    Though I could never have predicted the future, by sheer luck I
-                 preserved an original download of the reference in its full pixel detail. And so, here we are — picking
-                 up the mantle to continue the legacy.
-                </h3>
-            </div>
-            <div class="home-block">
-                <h3 class="justify-center align-center">
-                    I welcome each & every one of you to participate in this
-                    wonderful world!
-                </h3>
-            </div>
-            <div class="home-block">
-                <h3 class="justify-center align-center">
-                    <quote>— 'The Last Ember Scribe'</quote>
-                </h3>
-            </div>
-        </div>
-        <div class="home-block">
-            <hr>
-            <div id="fetchRef" class="justify-center align-center">
-                <p style="margin-bottom: 0.25rem;">Download reference sheet</p>
-                <a href="./Images/TorchHoundRef.png" id="downloadLink" download="TorchHoundRef.png">Unseal Knowledge</a>
-            </div>
-            <hr>
-        </div>
-        <div class="home-block">
-            <div class="gallery">
-                <div class="justify-center align-center galleryContainer">
-                    <p style="color: rgb(152, 99, 178);">Brenda</p>
-                    <img class="galleryPic" style="order: 1;" src="./Images/Brenda.png">
-                </div>
-                <div class="justify-center align-center galleryContainer">
-                    <p style="color: rgb(199, 87, 187);">Eleanor</p>
-                    <img class="galleryPic" style="order: 2;" src="./Images/Eleanor.png">
-                </div>  
-            </div>
-        </div>
-    </main>
-
-    <div id="dust-container"></div>
-    <script src="js/script.js"></script>
+        <div id="dust-container"></div>
+        <script src="js/script.js"></script>
+    </div>
 </body>
 
 </html>
